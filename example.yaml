@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: discord-daily-quote
+spec:
+  schedule: "0 12 * * *" 
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            kubernetes.io/hostname: raspberryPiName
+          containers:
+            - name: quote-sender
+              image: <USERNAME>/discord-daily-quotes:latest
+              env:
+                - name: DISCORD_WEBHOOK
+                  value: "USER_DISCORD_WEBHOOK"
+          restartPolicy: OnFailure
